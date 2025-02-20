@@ -3,42 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منشورات الحلقة</title>
+    <title>توليد منشورات الإذاعة</title>
     <style>
-        body { font-family: Arial, sans-serif; direction: rtl; text-align: right; margin: 20px; }
-        .container { max-width: 600px; margin: auto; }
-        textarea { width: 100%; height: 100px; margin-bottom: 10px; padding: 10px; }
-        button { display: block; width: 100%; padding: 10px; background: #007BFF; color: white; border: none; cursor: pointer; }
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: right; padding: 20px; background-color: #f5f5f5; }
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; margin-top: 10px; }
         button:hover { background: #0056b3; }
+        .output { background: white; padding: 10px; border-radius: 5px; margin-top: 15px; border: 1px solid #ddd; }
     </style>
-    <script>
-        function copyToClipboard(id) {
-            var textArea = document.getElementById(id);
-            textArea.select();
-            document.execCommand("copy");
-            alert("تم النسخ!");
-        }
-    </script>
 </head>
 <body>
-    <div class="container">
-        <h2>منشورات الحلقة</h2>
-        
-        <label>عنوان اليوتيوب:</label>
-        <textarea id="youtube_title">اسم البرنامج | الحلقة X | عنوان الحلقة</textarea>
-        <button onclick="copyToClipboard('youtube_title')">نسخ</button>
-        
-        <label>وصف اليوتيوب:</label>
-        <textarea id="youtube_desc">🎙️ استمع الآن إلى إذاعة دير الزور مباشرة! 🎙️\n🔴 تابعوا البث المباشر لإذاعتنا على موقعنا الرسمي:\n🌐 deirezzorfm.com\n\n📌 انضموا إلينا على فيسبوك لمتابعة آخر الأخبار والتحديثات:\n👍 صفحة الفيسبوك الرسمية\nhttps://www.facebook.com/profile.php?id=61569832435717\n\n✨ لا تنسوا دعمنا بـ:\n✅ الإعجاب بالفيديو ❤️\n✅ الاشتراك في القناة 🔔\n✅ ترك تعليق لتحفيزنا ✍️\n\nشكراً لكم على المتابعة!</textarea>
-        <button onclick="copyToClipboard('youtube_desc')">نسخ</button>
-        
-        <label>منشور الفيسبوك التشويقي:</label>
-        <textarea id="fb_teaser">📢 تشويق للحلقة القادمة! \n\nلمتابعة البث المباشر لإذاعة دير الزور، يمكنكم زيارة:\n🌐 deirezzorfm.com</textarea>
-        <button onclick="copyToClipboard('fb_teaser')">نسخ</button>
-        
-        <label>منشور الفيسبوك لمشاهدة الحلقة:</label>
-        <textarea id="fb_watch">🎥 شاهد الحلقة الآن! \n\nلمتابعة البث المباشر لإذاعة دير الزور، يمكنكم زيارة:\n🌐 deirezzorfm.com</textarea>
-        <button onclick="copyToClipboard('fb_watch')">نسخ</button>
+
+    <h2>📝 أدخل بيانات الحلقة</h2>
+
+    <label>🔹 عنوان الحلقة:</label>
+    <input type="text" id="title" placeholder="مثال: مستقبل الإعلام الرقمي">
+
+    <label>🎙️ اسم البرنامج:</label>
+    <input type="text" id="program" placeholder="مثال: برنامج حديث اليوم">
+
+    <label>🧑‍💼 اسم الضيف:</label>
+    <input type="text" id="guest" placeholder="مثال: د. أحمد العلي">
+
+    <label>📜 شرح عن الحلقة:</label>
+    <textarea id="description" rows="3" placeholder="مثال: في هذه الحلقة، نتحدث عن مستقبل الإعلام الرقمي..."></textarea>
+
+    <label>🔗 رابط الحلقة على يوتيوب:</label>
+    <input type="text" id="youtubeLink" placeholder="مثال: https://youtu.be/example">
+
+    <button onclick="generatePosts()">📌 إنشاء المنشورات</button>
+
+    <h2>📢 المنشورات الجاهزة:</h2>
+
+    <!-- عنوان يوتيوب -->
+    <div class="output">
+        <label>🎬 عنوان يوتيوب:</label>
+        <textarea id="youtubeTitle" readonly></textarea>
+        <button onclick="copyText('youtubeTitle')">📋 نسخ</button>
     </div>
+
+    <!-- وصف يوتيوب -->
+    <div class="output">
+        <label>📝 وصف يوتيوب:</label>
+        <textarea id="youtubeDescription" readonly rows="6"></textarea>
+        <button onclick="copyText('youtubeDescription')">📋 نسخ</button>
+    </div>
+
+    <!-- منشور فيسبوك (تشويق الحلقة) -->
+    <div class="output">
+        <label>📌 منشور فيسبوك (تشويق الحلقة):</label>
+        <textarea id="fbTeaser" readonly rows="4"></textarea>
+        <button onclick="copyText('fbTeaser')">📋 نسخ</button>
+    </div>
+
+    <!-- منشور فيسبوك (لمشاهدة الحلقة) -->
+    <div class="output">
+        <label>🎥 منشور فيسبوك (لمشاهدة الحلقة):</label>
+        <textarea id="fbWatchPost" readonly rows="4"></textarea>
+        <button onclick="copyText('fbWatchPost')">📋 نسخ</button>
+    </div>
+
+    <script>
+        function generatePosts() {
+            let title = document.getElementById("title").value;
+            let program = document.getElementById("program").value;
+            let guest = document.getElementById("guest").value;
+            let description = document.getElementById("description").value;
+            let youtubeLink = document.getElementById("youtubeLink").value;
+
+            // 🟢 توليد عنوان اليوتيوب
+            document.getElementById("youtubeTitle").value = `${program} | الحلقة الجديدة: ${title}`;
+
+            // 🟢 توليد وصف اليوتيوب
+            document.getElementById("youtubeDescription").value = 
+            `🎙️ استمع الآن إلى إذاعة دير الزور مباشرة! 🎙️\n🔴 تابعوا البث المباشر لإذاعتنا على موقعنا الرسمي:\n🌐 deirezzorfm.com\n\n📌 انضموا إلينا على فيسبوك لمتابعة آخر الأخبار والتحديثات:\n👍 صفحة الفيسبوك الرسمية\nhttps://www.facebook.com/profile.php?id=61569832435717\n\n✨ لا تنسوا دعمنا بـ:\n✅ الإعجاب بالفيديو ❤️\n✅ الاشتراك في القناة 🔔\n✅ ترك تعليق لتحفيزنا ✍️\n\n📺 شاهد الحلقة الآن: ${youtubeLink}`;
+
+            // 🟢 توليد منشور الفيسبوك (تشويق الحلقة)
+            document.getElementById("fbTeaser").value = 
+            `📢 لا تفوتوا الحلقة القادمة من "${program}" مع الضيف المميز "${guest}"\n🔍 سنتحدث عن: ${title}\n\n📅 موعد الحلقة: قريبًا\n🌐 لمتابعة البث المباشر: deirezzorfm.com`;
+
+            // 🟢 توليد منشور الفيسبوك (لمشاهدة الحلقة)
+            document.getElementById("fbWatchPost").value = 
+            `🎥 الآن يمكنكم مشاهدة الحلقة الجديدة من "${program}"\n🔹 عنوان الحلقة: ${title}\n📺 شاهد الآن: ${youtubeLink}\n🌐 لمتابعة البث المباشر: deirezzorfm.com`;
+        }
+
+        function copyText(elementId) {
+            let textArea = document.getElementById(elementId);
+            textArea.select();
+            document.execCommand("copy");
+            alert("تم النسخ بنجاح! ✅");
+        }
+    </script>
+
 </body>
 </html>
