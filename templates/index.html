@@ -3,41 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولد المنشورات</title>
+    <title>منشورات الحلقة</title>
+    <style>
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: right; margin: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; padding: 10px; }
+        button { display: block; width: 100%; padding: 10px; background: #007BFF; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+    <script>
+        function copyToClipboard(id) {
+            var textArea = document.getElementById(id);
+            textArea.select();
+            document.execCommand("copy");
+            alert("تم النسخ!");
+        }
+    </script>
 </head>
 <body>
-    <h1>مولد المنشورات</h1>
-    <form method="post">
-        <label>العنوان:</label>
-        <input type="text" name="title" required><br>
+    <div class="container">
+        <h2>منشورات الحلقة</h2>
         
-        <label>البرنامج:</label>
-        <input type="text" name="program"><br>
-
-        <label>الضيف:</label>
-        <input type="text" name="guest"><br>
-
-        <label>الموضوع:</label>
-        <input type="text" name="topic" required><br>
-
-        <label>الفئة:</label>
-        <select name="category">
-            <option value="خبر عاجل">خبر عاجل</option>
-            <option value="خبر محلي">خبر محلي</option>
-            <option value="حلقات برامج">حلقات برامج</option>
-        </select><br>
-
-        <label>رابط يوتيوب:</label>
-        <input type="text" name="youtube_link"><br>
-
-        <button type="submit">إنشاء المنشور</button>
-    </form>
-
-    {% if post_title %}
-        <h2>المنشور:</h2>
-        <p><strong>{{ post_title }}</strong></p>
-        <p>{{ description }}</p>
-        <p>{{ facebook_post }}</p>
-    {% endif %}
+        <label>عنوان اليوتيوب:</label>
+        <textarea id="youtube_title">اسم البرنامج | الحلقة X | عنوان الحلقة</textarea>
+        <button onclick="copyToClipboard('youtube_title')">نسخ</button>
+        
+        <label>وصف اليوتيوب:</label>
+        <textarea id="youtube_desc">🎙️ استمع الآن إلى إذاعة دير الزور مباشرة! 🎙️\n🔴 تابعوا البث المباشر لإذاعتنا على موقعنا الرسمي:\n🌐 deirezzorfm.com\n\n📌 انضموا إلينا على فيسبوك لمتابعة آخر الأخبار والتحديثات:\n👍 صفحة الفيسبوك الرسمية\nhttps://www.facebook.com/profile.php?id=61569832435717\n\n✨ لا تنسوا دعمنا بـ:\n✅ الإعجاب بالفيديو ❤️\n✅ الاشتراك في القناة 🔔\n✅ ترك تعليق لتحفيزنا ✍️\n\nشكراً لكم على المتابعة!</textarea>
+        <button onclick="copyToClipboard('youtube_desc')">نسخ</button>
+        
+        <label>منشور الفيسبوك التشويقي:</label>
+        <textarea id="fb_teaser">📢 تشويق للحلقة القادمة! \n\nلمتابعة البث المباشر لإذاعة دير الزور، يمكنكم زيارة:\n🌐 deirezzorfm.com</textarea>
+        <button onclick="copyToClipboard('fb_teaser')">نسخ</button>
+        
+        <label>منشور الفيسبوك لمشاهدة الحلقة:</label>
+        <textarea id="fb_watch">🎥 شاهد الحلقة الآن! \n\nلمتابعة البث المباشر لإذاعة دير الزور، يمكنكم زيارة:\n🌐 deirezzorfm.com</textarea>
+        <button onclick="copyToClipboard('fb_watch')">نسخ</button>
+    </div>
 </body>
 </html>
