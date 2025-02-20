@@ -1,34 +1,47 @@
 from flask import Flask, render_template, request
-import random
 
 app = Flask(__name__)
 
-def generate_post(title, program, guest, topic, category, youtube_link):
-    templates = {
-        "خبر عاجل": f"🚨 عاجل: {title} - تفاصيل جديدة حول {topic} 📢",
-        "خبر محلي": f"📍 {title} - تطورات محلية هامة في {topic} 🏡",
-        "حلقات برامج": f"🎥 شاهد الآن: {program} | {title} مع {guest} 🔍 {topic}",
-    }
+def generate_post(title, program, episode, topic, category, youtube_link):
+    youtube_title = f"{program} | الحلقة {episode} | {title}"
     
-    post_title = templates.get(category, f"📢 {title} - جديد على إذاعتنا")
-    description = f"في هذه الحلقة/الخبر، نتناول موضوع {topic}. تابعونا عبر البث المباشر!"
-    facebook_post = f"{post_title}\n\n{description}\n\n🎥 شاهد الآن: {youtube_link if youtube_link else 'تابعونا عبر موقعنا'}"
+    youtube_description = f"""
+    🎙️ استمع الآن إلى إذاعة دير الزور مباشرة! 🎙️
+    🔴 تابعوا البث المباشر لإذاعتنا على موقعنا الرسمي:
+    🌐 deirezzorfm.com
     
-    return post_title, description, facebook_post
+    📌 انضموا إلينا على فيسبوك لمتابعة آخر الأخبار والتحديثات:
+    👍 صفحة الفيسبوك الرسمية
+    https://www.facebook.com/profile.php?id=61569832435717
+    
+    ✨ لا تنسوا دعمنا بـ:
+    ✅ الإعجاب بالفيديو ❤️
+    ✅ الاشتراك في القناة 🔔
+    ✅ ترك تعليق لتحفيزنا ✍️
+    
+    شكراً لكم على المتابعة!
+    """
+    
+    facebook_teaser = f"🚀 لا تفوتوا الحلقة الجديدة من {program}! 🔥\n\n🎬 عنوان الحلقة: {title}\n🔍 الموضوع: {topic}\n\nلمتابعة البث المباشر لإذاعة دير الزور، يمكنكم زيارة:\n🌐 deirezzorfm.com"
+    
+    facebook_watch = f"🎥 شاهد الحلقة الجديدة الآن! 🎬\n\n📌 {youtube_title}\n🔍 {topic}\n\n🎥 رابط المشاهدة: {youtube_link if youtube_link else 'تابعونا عبر موقعنا'}\n\nلمتابعة البث المباشر لإذاعة دير الزور، يمكنكم زيارة:\n🌐 deirezzorfm.com"
+    
+    return youtube_title, youtube_description, facebook_teaser, facebook_watch
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         title = request.form['title']
-        program = request.form.get('program', '')
-        guest = request.form.get('guest', '')
+        program = request.form['program']
+        episode = request.form['episode']
         topic = request.form['topic']
         category = request.form['category']
         youtube_link = request.form.get('youtube_link', '')
         
-        post_title, description, facebook_post = generate_post(title, program, guest, topic, category, youtube_link)
+        youtube_title, youtube_description, facebook_teaser, facebook_watch = generate_post(title, program, episode, topic, category, youtube_link)
         
-        return render_template('index.html', post_title=post_title, description=description, facebook_post=facebook_post)
+        return render_template('index.html', youtube_title=youtube_title, youtube_description=youtube_description, 
+                               facebook_teaser=facebook_teaser, facebook_watch=facebook_watch)
     
     return render_template('index.html')
 
