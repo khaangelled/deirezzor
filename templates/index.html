@@ -1,12 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask App</title>
+    <title>مولد المنشورات</title>
 </head>
 <body>
-    <h1>Welcome to My Flask App</h1>
-    <p>This is the homepage.</p>
+    <h1>مولد المنشورات</h1>
+    <form method="post">
+        <label>العنوان:</label>
+        <input type="text" name="title" required><br>
+        
+        <label>البرنامج:</label>
+        <input type="text" name="program"><br>
+
+        <label>الضيف:</label>
+        <input type="text" name="guest"><br>
+
+        <label>الموضوع:</label>
+        <input type="text" name="topic" required><br>
+
+        <label>الفئة:</label>
+        <select name="category">
+            <option value="خبر عاجل">خبر عاجل</option>
+            <option value="خبر محلي">خبر محلي</option>
+            <option value="حلقات برامج">حلقات برامج</option>
+        </select><br>
+
+        <label>رابط يوتيوب:</label>
+        <input type="text" name="youtube_link"><br>
+
+        <button type="submit">إنشاء المنشور</button>
+    </form>
+
+    {% if post_title %}
+        <h2>المنشور:</h2>
+        <p><strong>{{ post_title }}</strong></p>
+        <p>{{ description }}</p>
+        <p>{{ facebook_post }}</p>
+    {% endif %}
 </body>
 </html>
