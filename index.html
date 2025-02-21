@@ -121,6 +121,15 @@
     }
 </script>
 
+<script>
+    function copyText(elementId) {
+        let textArea = document.getElementById(elementId);
+        textArea.select();
+        textArea.setSelectionRange(0, 99999); // دعم للأجهزة المحمولة
+        document.execCommand("copy");
+        alert("تم النسخ: " + textArea.value);
+    }
+</script>
 
 </body>
 </html>
